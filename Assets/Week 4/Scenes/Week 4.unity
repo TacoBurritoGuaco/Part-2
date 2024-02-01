@@ -308,6 +308,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1899045281917690488, guid: 72f908a13c5a0eb40acdabcc801caf01, type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3259641250617470182, guid: 72f908a13c5a0eb40acdabcc801caf01, type: 3}
       propertyPath: m_Name
       value: Plane
