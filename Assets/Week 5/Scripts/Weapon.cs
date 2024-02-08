@@ -32,7 +32,11 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        collision.gameObject.SendMessage("TakeDamage", 1);
-        Destroy(gameObject);
+        //Only destroys on collision with the player (same for take damage)
+        if(collision.gameObject == GameObject.Find("Knight"))
+        {
+            collision.gameObject.SendMessage("TakeDamage", 1);
+            Destroy(gameObject);
+        }
     }
 }
