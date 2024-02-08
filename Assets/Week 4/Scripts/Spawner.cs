@@ -7,10 +7,10 @@ public class Spawner : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject planePrefab;
-    float randTime = Random.Range(1, 5);
+    float randTime;
     void Start()
     {
-        
+        randTime = Random.Range(1, 5); 
     }
 
     // Update is called once per frame
