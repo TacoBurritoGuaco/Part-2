@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class Knight : MonoBehaviour
 {
+
+    //Task 1 variables
     Vector2 destination;
     Vector2 movement; //direction we move in
     public float speed = 3; //Tune depending on animation
     Rigidbody2D rigidbody;
     Animator animator;
     bool clickSelf = false;
+
+    //Task 2 variables
+    public float health;
+    public float maxHealth = 5;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        health = maxHealth;
     }
 
     private void FixedUpdate()
@@ -41,10 +49,26 @@ public class Knight : MonoBehaviour
     private void OnMouseDown()
     {
         clickSelf = true;
-        animator.SetTrigger("TakeDamage");
+        SendMessage("TakeDamage", 1); //If you have a function called this in ANY object related to this, call it!
     }
     private void OnMouseUp()
     {
         clickSelf = false;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        health = Mathf.Clamp(health, 0, maxHealth);//saves us from doing if statements
+        //Keep something within these bounds
+
+        if (health == 0)
+        {
+            //die? lol?
+            animator.SetTrigger("Death");
+        } else
+        {
+            animator.SetTrigger("TakeDamage");
+        } 
     }
 }
