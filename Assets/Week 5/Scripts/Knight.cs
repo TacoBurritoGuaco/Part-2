@@ -39,6 +39,10 @@ public class Knight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Attack();
+        }
         if (Input.GetMouseButton(0) && !clickSelf)
         {
             destination = Camera.main.ScreenToWorldPoint(Input.mousePosition); //magic trick, remember it for later!
@@ -70,5 +74,12 @@ public class Knight : MonoBehaviour
         {
             animator.SetTrigger("TakeDamage");
         } 
+    }
+    public void Attack()
+    {
+        if (health > 0)
+        {
+            animator.SetTrigger("Attack");
+        }
     }
 }
