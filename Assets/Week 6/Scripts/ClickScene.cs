@@ -13,7 +13,7 @@ public class ClickScene : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            SceneManager.LoadScene(2); //load the knight scene
+            SceneManager.LoadScene(3); //load the knight scene
         }
     }
 }
