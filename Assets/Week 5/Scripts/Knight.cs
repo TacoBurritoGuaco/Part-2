@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Knight : MonoBehaviour
 {
@@ -48,7 +49,8 @@ public class Knight : MonoBehaviour
         {
             Attack();
         }
-        if (Input.GetMouseButton(0) && !clickSelf)
+        if (Input.GetMouseButton(0) && !clickSelf && !EventSystem.current.IsPointerOverGameObject()) //returns true any time the mouse object is over a game object
+            //This means that this only works when you do not click on UI elements
         {
             destination = Camera.main.ScreenToWorldPoint(Input.mousePosition); //magic trick, remember it for later!
         }
