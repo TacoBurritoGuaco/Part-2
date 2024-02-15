@@ -22,9 +22,11 @@ public class Knight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //PlayerPrefs.DeleteKey("healthLast"); Testing to make sure there is a default value
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        health = maxHealth;
+        health = PlayerPrefs.GetFloat("healthLast", 5); //sets health to healthLast at the start of the scene
+        SendMessage("savedValue", PlayerPrefs.GetFloat("healthLast")); //sets the healthbar to the healthvalue saved
     }
 
     private void FixedUpdate()
@@ -43,6 +45,8 @@ public class Knight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (isDead) return;
 
         if (Input.GetMouseButtonDown(1))
@@ -74,6 +78,8 @@ public class Knight : MonoBehaviour
         health -= damage;
         health = Mathf.Clamp(health, 0, maxHealth);//saves us from doing if statements
         //Keep something within these bounds
+        PlayerPrefs.SetFloat("healthLast", health); //saves the current health of the knight to our system
+        //this should also update this value whenever your health value is affected
 
         if (health == 0)
         {
@@ -91,6 +97,18 @@ public class Knight : MonoBehaviour
         if (health > 0)
         {
             animator.SetTrigger("Attack");
+        }
+    }
+
+    //This is called alongside the healthbar version of this function
+    //Effectively, this allows me to check if health == 0, and if it is, the death animation plays
+    public void savedValue()
+    {
+        if (health == 0)
+        {
+            //die? lol?
+            isDead = true;
+            animator.SetTrigger("Death");
         }
     }
 }
