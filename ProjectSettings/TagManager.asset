@@ -6,7 +6,6 @@ TagManager:
   tags:
   - plane
   - runway
-  - Edge
   layers:
   - Default
   - TransparentFX
