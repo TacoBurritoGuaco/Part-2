@@ -10,6 +10,7 @@ public class GoalkeeperController : MonoBehaviour
     Vector2 direction;
     float mag;
     public float radius;
+    float speed;
     // Start is called before the first frame update
 
     private void Update()
@@ -22,13 +23,24 @@ public class GoalkeeperController : MonoBehaviour
 
     private void FixedUpdate()
     {
-       if (mag/2 <= radius)
+        if (Controller.SelectedPlayer != null)
         {
-            goalieRb.position = (Vector2)transform.position - direction * (mag / 2);
+            speed += 0.01f;
+            speed = Mathf.Clamp(speed, 0, 0.1f);
+        }
+
+        if (mag/2 <= radius)
+        {
+            goalieRb.position = Vector2.MoveTowards(goalieRb.position, (Vector2)transform.position - direction * (mag / 2), speed);
         }
        else
         {
-            goalieRb.position = (Vector2)transform.position - direction * radius;
+            goalieRb.position = Vector2.MoveTowards(goalieRb.position, (Vector2)transform.position - direction * radius, speed);
+        }
+
+        if (goalieRb.position == (Vector2)transform.position - direction * radius || goalieRb.position == (Vector2)transform.position - direction * (mag / 2))
+        {
+            speed = 0;
         }
     }
 }

@@ -842,7 +842,7 @@ GameObject:
   - component: {fileID: 740967072}
   m_Layer: 0
   m_Name: Pitch
-  m_TagString: Untagged
+  m_TagString: Edge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3480,11 +3480,11 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -10.031004, y: -6.045677}
-  - {x: -10.006197, y: 6.076681}
+  - {x: -10.040154, y: -4.508374}
+  - {x: -10.006197, y: 5.99903}
   - {x: 9.95789, y: 5.9882936}
-  - {x: 10.025346, y: -6.0098534}
-  - {x: -9.99724, y: -6.0146737}
+  - {x: 10.025346, y: -4.5555515}
+  - {x: -10.0252075, y: -4.5044365}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
