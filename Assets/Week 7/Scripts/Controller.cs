@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Controller : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Controller : MonoBehaviour
     float charge;
     public float maxCharge = 1;
     Vector2 direction;
+
+    public static float score;
+    public TextMeshProUGUI myUiText;
 
     public static FootballPlayer SelectedPlayer { get; private set; } //variable that holds the currently selected player
     //Belongs to the class controller, rather than an object using this
@@ -41,6 +45,7 @@ public class Controller : MonoBehaviour
     }
     private void Update()
     {
+        myUiText.text = "score: " + score.ToString();
         if (SelectedPlayer == null) return;
         if (Input.GetKeyDown(KeyCode.Space)) {
 
