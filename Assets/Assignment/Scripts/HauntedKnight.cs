@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 //This is the knight script that will be used in the assignment project
 //It is, for the most part, an edited version of the already existing knight script, with differences to accomodate for the differences between week 5 and this assignment
@@ -17,6 +18,7 @@ public class HauntedKnight : MonoBehaviour
     public float health; //the knight's current health
     public float maxHealth = 5; //the knight's max health
     bool isDead = false; //a boolean to check if the knight has died
+    float deathTimer = 0; //a timer used for when the knight dies 
 
     // Start sets up important variables used by the haunted knight
     void Start()
@@ -24,12 +26,24 @@ public class HauntedKnight : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>(); //get the knight's rigidBody
         animator = GetComponent<Animator>(); //get the knight's animator
         health = maxHealth; //set health to max
+        SendMessage("savedValue", maxHealth); //sets the healthbar to the max healthValue
     }
 
     //FixedUpdate is used to perform he knight's movement.
     private void FixedUpdate()
     {
-        if (isDead) return; //stop this function is the knight is dead
+        //When the knight dies
+        if (isDead)
+        {
+            deathTimer += 1 * Time.deltaTime; //increases this timer by seconds
+            //if 1 second has passed after death
+            if (deathTimer >= 1f) {
+                SendMessage("deathUpdate"); //sends a message that forces all enemies to be destroyed
+                                            //It additionally stores the current score, and the current time, for the end screen
+                SceneManager.LoadScene(2); //loads the second scene, being the game over screen
+            }     
+            return; //returs to prevent the knight from being able to move while dead
+        }
 
         movement = destination - (Vector2)transform.position; //substracts the destination by the position of the knight to get an in-between vector
         //if either the y or x of destination (mouseposition) is greater than the player's own x and y coords
@@ -78,6 +92,7 @@ public class HauntedKnight : MonoBehaviour
     private void OnMouseDown()
     {
         clickSelf = true; //set "clickself" to true, preventing the knight from moving if they click on themselves
+        TakeDamage(1); //used for testing
     }
     //function called when the mouse is pressed up
     private void OnMouseUp()
@@ -96,7 +111,6 @@ public class HauntedKnight : MonoBehaviour
         {
             isDead = true; //set isDead to true (the knight has died)
             animator.SetTrigger("Death"); //trigger the "death" animation
-            //SendMessage()
         }
         else
         {
