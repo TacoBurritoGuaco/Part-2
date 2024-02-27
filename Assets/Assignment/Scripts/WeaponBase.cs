@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//This class serves the purpose of allowing me to create object iteration. 
 public class WeaponBase : MonoBehaviour
 {
     Vector2 movement; //The vector towards which the weapon moves
@@ -13,9 +14,9 @@ public class WeaponBase : MonoBehaviour
 
     float points; //the points that the weapon gives when killed by the knight
 
-    // Start is called before the first frame update
-
     //Weapon's object constructor to be overriden by the other weapons
+    //I will keep this around, however in the case that I can do this more efficiently by simply using a mix of prefabs and public values, it will be removed
+    //It all largely depends on how object inheritence is handled in unity.
     WeaponBase()
     {
         //setting base values for the weapon class
@@ -25,24 +26,16 @@ public class WeaponBase : MonoBehaviour
         points = 10;
     }
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>(); //Gets the weapon's rigidbody
-    }
-
-    //Empty fixedUpdate that will be overriden by classes inhereting from the weapon base
-    //Used specifically to move the weapons in their own unique ways
-    private void FixedUpdate()
-    {
-        
-    }
-
     // Update is called once per frame
+    //This update function can and likely will be overriden by some of the enemy subclasses
+    //for now, however, it remains purely to serve the purpose of destroying the gameObject after a set period of time to prevent lag issues
     void Update()
     {
         Destroy(gameObject, 10); //Destroy the game object after 10 seconds by default
     }
 
+    //script that checks whenever a weapon has collided with another gameObject
+    //if it collides with the player, it'll deal damage to them and destroy itself
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Only destroys on collision with the player (same for take damage)
@@ -54,10 +47,17 @@ public class WeaponBase : MonoBehaviour
     }
 
     //Will be called by the knight whenever a weapon collides with the knight as it is doing its swing animation
-    //This will have more functionality later
+    //This is called by the knight using SendMessage
     public void weaponDeath()
     {
         GameObject.Find("Manager").SendMessage("scoreUpdate", points); //increase the score in main screen
         Destroy(gameObject); //destroy the object
+    }
+
+    //Simple function that instantly destroys the weapon
+    //This is called by the knight using sendMessage whenever the knight is killed using sendMessage.
+    public void deathUpdate()
+    {
+        Destroy(gameObject);
     }
 }
