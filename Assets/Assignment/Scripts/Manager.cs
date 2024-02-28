@@ -41,7 +41,6 @@ public class Manager : MonoBehaviour
         //This way, the time value can be pulled in the end screen and displayed as the player's final time
     }
     
-
     //function called using sendmessage whenever the knight takes damage and updates the slider's size
     public void TakeDamage(float damage)
     {

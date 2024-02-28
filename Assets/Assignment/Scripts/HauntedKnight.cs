@@ -26,7 +26,8 @@ public class HauntedKnight : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>(); //get the knight's rigidBody
         animator = GetComponent<Animator>(); //get the knight's animator
         health = maxHealth; //set health to max
-        SendMessage("savedValue", maxHealth); //sets the healthbar to the max healthValue
+        GameObject.Find("Manager").SendMessage("savedValue", maxHealth); //sets the healthbar to the max healthValue
+        //This is done by finding the manager object and sending a message to it
     }
 
     //FixedUpdate is used to perform he knight's movement.
@@ -38,8 +39,7 @@ public class HauntedKnight : MonoBehaviour
             deathTimer += 1 * Time.deltaTime; //increases this timer by seconds
             //if 1 second has passed after death
             if (deathTimer >= 1f) {
-                SendMessage("deathUpdate"); //sends a message that forces all enemies to be destroyed
-                                            //It additionally stores the current score, and the current time, for the end screen
+                GameObject.Find("Manager").SendMessage("deathUpdate"); //sends a message to the manager to run deathUpdate, updating the score and the time playerPrefs
                 SceneManager.LoadScene(2); //loads the second scene, being the game over screen
             }     
             return; //returs to prevent the knight from being able to move while dead
@@ -92,7 +92,8 @@ public class HauntedKnight : MonoBehaviour
     private void OnMouseDown()
     {
         clickSelf = true; //set "clickself" to true, preventing the knight from moving if they click on themselves
-        TakeDamage(1); //used for testing
+        TakeDamage(1); //used for testing, damages the player
+        GameObject.Find("Manager").SendMessage("TakeDamage", 1); //finds the manager object, and tells it to take damage (effectively, lowering the healthBar)
     }
     //function called when the mouse is pressed up
     private void OnMouseUp()
