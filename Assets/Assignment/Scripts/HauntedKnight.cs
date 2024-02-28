@@ -14,11 +14,15 @@ public class HauntedKnight : MonoBehaviour
     Rigidbody2D rigidbody; //The knight's rigidbody
     Animator animator; //The knight's animator
     bool clickSelf = false; //A boolean to check if the knight has clicked on themselves
+    bool isDead = false; //a boolean to check if the knight has died
+    public bool isAttacking = false; //a boolean that checks if the knight is attacking
+    //thi particular boolean is public so that it may be accessed by WeaponBase
 
     public float health; //the knight's current health
     public float maxHealth = 5; //the knight's max health
-    bool isDead = false; //a boolean to check if the knight has died
+
     float deathTimer = 0; //a timer used for when the knight dies 
+    float attackTimer = 0; //a timer that determines whether or not the knight has stopped attacking
 
     // Start sets up important variables used by the haunted knight
     void Start()
@@ -74,9 +78,24 @@ public class HauntedKnight : MonoBehaviour
 
         if (isDead) return; //stop this function if the knight is dead
 
+        //If the player is currently attacking
+        if (isAttacking)
+        {
+            attackTimer += 1 * Time.deltaTime; //increase attacktimer based on real time
+            if (attackTimer >= 1f) //if the attacktimer is greater than or equal to 1
+            {
+                isAttacking = false; //set "isAttacking" to false
+                attackTimer = 0;
+            }
+        }
         //when right-click is pressed on the mouse
         if (Input.GetMouseButtonDown(1))
         {
+            //if attackTimer is currently reset
+            if (attackTimer <= 0)
+            {
+                isAttacking = true; //set isAttack equal to true
+            }
             Attack(); //call the "attack" function
         }
         if (Input.GetMouseButton(0) && !clickSelf && !EventSystem.current.IsPointerOverGameObject()) //returns true any time the mouse object is over a game object
@@ -92,8 +111,8 @@ public class HauntedKnight : MonoBehaviour
     private void OnMouseDown()
     {
         clickSelf = true; //set "clickself" to true, preventing the knight from moving if they click on themselves
-        TakeDamage(1); //used for testing, damages the player
-        GameObject.Find("Manager").SendMessage("TakeDamage", 1); //finds the manager object, and tells it to take damage (effectively, lowering the healthBar)
+        //TakeDamage(1); //used for testing, damages the player
+        //GameObject.Find("Manager").SendMessage("TakeDamage", 1); //finds the manager object, and tells it to take damage (effectively, lowering the healthBar)
     }
     //function called when the mouse is pressed up
     private void OnMouseUp()
@@ -119,11 +138,12 @@ public class HauntedKnight : MonoBehaviour
             animator.SetTrigger("TakeDamage");
         }
     }
+    //Function that attacks the player
     public void Attack()
     {
-        if (health > 0)
+        if (health > 0) //if the health is greater than 0
         {
-            animator.SetTrigger("Attack");
+            animator.SetTrigger("Attack"); //perform the attack animation
         }
     }
 
@@ -131,11 +151,11 @@ public class HauntedKnight : MonoBehaviour
     //Effectively, this allows me to check if health == 0, and if it is, the death animation plays
     public void savedValue()
     {
-        if (health == 0)
+        if (health == 0) //if the health equals 0
         {
             //die? lol?
-            isDead = true;
-            animator.SetTrigger("Death");
+            isDead = true; //set the player to be dead
+            animator.SetTrigger("Death"); //animate the player's death animation
         }
     }
 }
