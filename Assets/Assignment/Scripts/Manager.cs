@@ -16,6 +16,17 @@ public class Manager : MonoBehaviour
     public TextMeshProUGUI scoreLabel; //The textMesh used in the score UI
     public TextMeshProUGUI timeLabel; //The textMesh used in the time UI
 
+    //resets the playerPrefs, as well as time and score, when restarting
+    private void Start()
+    {
+        //sets both score and time back to default
+        score = 0;
+        time = 0;
+        //Resets the playerPrefs back to 0
+        PlayerPrefs.SetFloat("scoreTotal", score);
+        PlayerPrefs.SetFloat("finalTime", time);
+    }
+
     //update is used to continously update the time every second (also done using times.deltatime)
     private void Update()
     {
@@ -37,8 +48,9 @@ public class Manager : MonoBehaviour
     {
         PlayerPrefs.SetFloat("scoreTotal", score); //saves the score value to a PlayerPrefs 
         //This way, the score value can be pulled in the end screen as the player's total score.
-        PlayerPrefs.SetFloat("finalTime", time); //saves the current time to playerPrefs
+        PlayerPrefs.SetFloat("finalTime", (int)time); //saves the current time to playerPrefs
         //This way, the time value can be pulled in the end screen and displayed as the player's final time
+        //Note: this is saved as an integer to prevent it from looking unpleasant in the game over screen
     }
     
     //function called using sendmessage whenever the knight takes damage and updates the slider's size
