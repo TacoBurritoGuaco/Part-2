@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 //This class serves the purpose of allowing me to create object iteration. 
 public class WeaponBase : MonoBehaviour
 {
+    public bool hasBeaten = false; //when the weapon is defeated
 
     public Vector2 movement; //The vector towards which the weapon moves
     public float rotationValue; //the value of rotation the weapon does
@@ -45,6 +46,8 @@ public class WeaponBase : MonoBehaviour
         float interpolation = fading.Evaluate(spawnTime);
         transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, interpolation);
 
+        if (hasBeaten) return; //stop if the weapon has been beaten
+
         Destroy(gameObject, 8); //Destroy the game object after 8 seconds by default
         spawnTime += 1 * Time.deltaTime; //increases the spawnTime by a second based on the in-game timer
     }
@@ -53,6 +56,8 @@ public class WeaponBase : MonoBehaviour
     //if it collides with the player, it'll deal damage to them and destroy itself
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if (hasBeaten) return; //stop if the weapon has been beaten
+
         //Only destroys on collision with the player (same for take damage)
         if (collision.gameObject == GameObject.Find("HauntedKnight") && spawnTime >= 2) //find out if you are colliding with the knight and a second has passed since you spawned
         {
@@ -75,7 +80,9 @@ public class WeaponBase : MonoBehaviour
     public void weaponDeath()
     {
         GameObject.Find("Manager").SendMessage("scoreUpdate", points); //increase the score in main screen
-        Destroy(gameObject); //destroy the object
+        SendMessage("weaponDefeated");
+        hasBeaten = true;
+        Destroy(gameObject, 1); //destroy the object
     }
 
     //Simple function that instantly destroys the weapon

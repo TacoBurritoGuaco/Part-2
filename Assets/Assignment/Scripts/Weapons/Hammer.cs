@@ -25,6 +25,8 @@ public class Hammer : WeaponBase
     //I am reusing it here to save time, and it works the exact same, just using inheretance
     private void FixedUpdate()
     {
+        if (hasBeaten) return; //stop if the weapon has been beaten
+
         rotationValue += 20; //increase rotation by 20
         movement = (Vector2)GameObject.Find("HauntedKnight").transform.position - (Vector2)transform.position; //displacement vector from knight position and the weapon's position
         rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime); //Moves the weapon towards the knight using rigidbody

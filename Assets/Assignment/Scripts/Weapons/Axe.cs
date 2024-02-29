@@ -25,6 +25,8 @@ public class Axe : WeaponBase
     //The axe spins, not unlike the hammer. However, unlike the hammer, both its speed and rotation as not constant, incrementally increasing in speed.
     private void FixedUpdate()
     {
+        if (hasBeaten) return; //stop if the weapon has been beaten
+
         //Increases acceleration over time, therefore, increasing the rate at which the axe spins and moves
         speedAcc += 0.01f * Time.deltaTime;
         rotAcc += 1f * Time.deltaTime;
