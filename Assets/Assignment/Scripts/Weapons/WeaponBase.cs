@@ -13,6 +13,7 @@ public class WeaponBase : MonoBehaviour
     public Rigidbody2D rb; //the weapon's rigid body
 
     public float points; //the points that the weapon gives when killed by the knight
+    public float spawnTime; //how long the object has been alive for
 
     //Start function to be overrriden by inherited subclasses
     //To be fully honest, I am shocked at how unbeliavably effective using start instead of a specific constructor is in comparison
@@ -26,6 +27,7 @@ public class WeaponBase : MonoBehaviour
         speed = 1; //get the base speed
         points = 10; //get the base points
         rb = GetComponent<Rigidbody2D>(); //get the rigidBody2d
+        transform.position = new Vector3(Random.Range(-7, 8), Random.Range(-4, 5), 0); //moves the object to a random position upon start
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class WeaponBase : MonoBehaviour
     public void Update()
     {
         Destroy(gameObject, 10); //Destroy the game object after 10 seconds by default
+        spawnTime += 1 * Time.deltaTime; //increases the spawnTime by a second based on the in-game timer
     }
 
     //script that checks whenever a weapon has collided with another gameObject
@@ -41,7 +44,7 @@ public class WeaponBase : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         //Only destroys on collision with the player (same for take damage)
-        if (collision.gameObject == GameObject.Find("HauntedKnight")) //find out if you are colliding with the knight
+        if (collision.gameObject == GameObject.Find("HauntedKnight") && spawnTime >= 1) //find out if you are colliding with the knight and a second has passed since you spawned
         {
             //If the knight is currently attacking
             //This is done by getting the script component from the haunted knight and calling the isAttacking boolean
